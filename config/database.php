@@ -1,8 +1,9 @@
 <?php
 // config.php
 
+
 function conectar() {
-    $mysqli = new mysqli('localhost', 'root', '', 'estructurasdatos');
+    $mysqli = new mysqli('autorack.proxy.rlwy.net', 'root', 'HIHSjTtbRDwvIzJYOCqivjoGtlDxjqZr', 'webtarea',21384);
     
     if ($mysqli->connect_error) {
         // Muestra un mensaje de error detallado con la descripción y el código del error.
