@@ -26,7 +26,14 @@
             <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
                 <a class="navbar-brand text-white d-none d-lg-block" href="#">Estructuras de Datos</a>
                 <ul class="navbar-nav w-50 justify-content-around">
-                    <li class="nav-item"><a class="nav-link text-white" href="index.php">Inicio</a></li>
+                    <?php
+                    if(isset($_SESSION['id'])){
+                      echo'<li class="nav-item"><a class="nav-link text-white" href="vistaAdmin.php">Inicio</a></li>';
+                    }else{
+                        echo'<li class="nav-item"><a class="nav-link text-white" href="index.php">Inicio</a></li>';
+                    }
+                    ?>
+                    
                     <li class="nav-item"><a class="nav-link text-white" href="arrays.php">Arrays</a></li>
                     <li class="nav-item"><a class="nav-link text-white" href="pilas.php">Pilas</a></li>
                     <li class="nav-item"><a class="nav-link text-white" href="colas.php">Colas</a></li>
@@ -36,7 +43,18 @@
                     <li class="nav-item"><a class="nav-link text-white" href="ordenacion.php">Ordenación</a></li>
                 </ul>
                 <ul class="navbar-nav">
-                    <li class="nav-item "><a class="nav-link text-white" href="./views/login.php">Iniciar Sesión</a></li>
+                  <?php
+                  if(!isset($_SESSION['id'])){
+                      echo '<li class="nav-item "><a class="nav-link text-white" href="./views/login.php">Iniciar Sesión</a></li>';
+                  }else{
+                    echo"<form action='./login.php' method='post'>
+                    <li class='nav-item '><input type='submit' class='nav-link text-white' name='logout' value='Cerrar Sesión'></li>
+                    
+                    </form>";
+                   
+                  }
+                  ?>
+                    
                 </ul>
             </div>
         </div>
@@ -46,4 +64,5 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 </body>
+
 </html>

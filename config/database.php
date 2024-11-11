@@ -1,18 +1,14 @@
 <?php
 // config.php
 
-$host = 'localhost';
-$dbname = 'estructurasDatos';
-$username = 'root';
-$password = '';
-
-
-function conectar(){
-    global $host, $dbname, $username, $password;
-    $mysqli = new mysqli( $host, $dbname, $username, $password );
+function conectar() {
+    $mysqli = new mysqli('localhost', 'root', '', 'estructurasdatos');
+    
     if ($mysqli->connect_error) {
-        die('Hubo un error de conexion'. $mysqli->connect_error);
-} 
-return $mysqli;
-
+        // Muestra un mensaje de error detallado con la descripción y el código del error.
+        die('Hubo un error de conexión: ' . $mysqli->connect_error . ' (Código: ' . $mysqli->connect_errno . ')');
+    }
+    
+    return $mysqli;
 }
+
