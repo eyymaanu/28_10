@@ -2,12 +2,53 @@
 require_once '../config/middleware.php';
 verificarUsu();
 ?>
+
+<?php
+require_once '../config/database.php';
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // Recibir los datos del formulario
+    $nombre = $_POST['nombre'];
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+
+    // Encriptar la contraseña antes de guardarla
+    $passwordHash = password_hash($password, PASSWORD_BCRYPT);
+
+    // Conectar a la base de datos
+    $mysqli = conectar();
+
+    // Verificar si el email ya está registrado
+    $stmt = $mysqli->prepare("SELECT id FROM usuarios WHERE email = ?");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $stmt->store_result();
+
+    if ($stmt->num_rows > 0) {
+        echo "El email ya está registrado.";
+    } else {
+        // Insertar el nuevo usuario en la base de datos
+        $stmt = $mysqli->prepare("INSERT INTO usuarios (nombre, email, password) VALUES (?, ?, ?)");
+        $stmt->bind_param("sss", $nombre, $email, $passwordHash);
+
+        if ($stmt->execute()) {
+            echo "<script>alert('Usuario registrado correctamente.');</script>";
+        } else {
+            echo "<script>alert('Error al registrar al Usuario');</script>";
+        }
+    }
+
+    // Cerrar la conexión
+    $stmt->close();
+    $mysqli->close();
+}
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agregar Contenido</title>
+    <title>Agregar Usuario</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         /* Personalización de la barra de navegación */
@@ -63,9 +104,21 @@ verificarUsu();
         <div class="row justify-content-center">
             <div class="col-md-8 col-lg-6">
                 <div class="card">
-                    <h2 class="text-center mb-4">Agregar Nuevo Contenido</h2>
-                    <form id="agregarContenidoForm">
-                      
+                    <h2 class="text-center mb-4">Registrar Nuevo Usuario</h2>
+                    <form method="POST">
+                        <div class="mb-3">
+                            <label for="nombre" class="form-label">Nombre</label>
+                            <input type="text" class="form-control" id="nombre" name="nombre" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Correo Electrónico</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Contraseña</label>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                        </div>
+                        <button type="submit" class="btn btn-submit">Registrar Usuario</button>
                     </form>
                 </div>
             </div>
@@ -75,25 +128,6 @@ verificarUsu();
     <!-- Bootstrap JavaScript con Popper.js -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
-    <script>
-   document.getElementById('agregarContenidoForm').addEventListener('submit', function(event) {
-     event.preventDefault();
-     const formData = new FormData(this);
-     fetch('../controllers/procesar_agregar_user.php', {
-       method: 'POST',
-       body: formData
-     })
-     .then(response => response.text())
-     .then(data => {
-       alert(data);
-     })
-     .catch(error => {
-       console.error('Error:', error);
-     });
-   });
-
-
-</script>
+    
 </body>
 </html>
-

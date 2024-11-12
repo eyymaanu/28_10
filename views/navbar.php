@@ -45,6 +45,7 @@
                 <ul class="navbar-nav">
                   <?php
                   if(!isset($_SESSION['id'])){
+                    
                       echo '<li class="nav-item "><a class="nav-link text-white" href="./views/login.php">Iniciar Sesión</a></li>';
                   }else{
                     echo"<form action='./login.php' method='post'>

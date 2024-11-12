@@ -11,7 +11,8 @@ function login($email, $password) {
     $result = $stmt->get_result();
     $user = $result->fetch_assoc();
 
-    if ($user && $user['password'] == $password) { // Aquí se compara sin hash
+    // Verificar si el usuario existe y la contraseña es correcta
+    if ($user && password_verify($password, $user['password'])) {
         $_SESSION['id'] = $user['id'];
         header("Location: ../views/vistaAdmin.php");
         exit;
@@ -29,20 +30,21 @@ if (isset($_POST['login'])) {
     $password = $_POST['password'];
     login($email, $password);
 }
+
 if (isset($_POST['logout'])) {
-   
     session_destroy();
     header('Location: ../index.php');
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iniciar Sesión</title>
-    <link rel="stylesheet" href="login.css">
-    <!-- Estilos omitidos para brevedad -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+   <link rel="stylesheet" href="login.css">
 </head>
 <body>
     <div class="container">
@@ -53,6 +55,5 @@ if (isset($_POST['logout'])) {
             <input class="login-button" type="submit" value="Iniciar Sesión" name="login">
         </form>
     </div>
-
 </body>
 </html>

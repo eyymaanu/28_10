@@ -1,52 +1,29 @@
 <?php
-// eliminarContenido.php
 require_once '../config/database.php';
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Verifica que se haya enviado un ID válido
-    if (isset($_POST['id']) && !empty($_POST['id'])) {
-        $id = intval($_POST['id']);  // Convertir a entero para evitar inyecciones SQL
+if (isset($_POST['id'])) {
+    $id = $_POST['id'];
+    
+    $conn = conectar();
 
-        try {
-            $conn = conectar();
-
-            // Primero, selecciona el archivo actual para eliminarlo del servidor si existe
-            $query = "SELECT archivo FROM contenido WHERE id = ?";
-            $stmt = $conn->prepare($query);
-            $stmt->bind_param("i", $id);
-            $stmt->execute();
-            $result = $stmt->get_result();
-
-            if ($result->num_rows > 0) {
-                $row = $result->fetch_assoc();
-                $archivo = $row['archivo'];
-
-                // Si el archivo existe en la carpeta de uploads, elimínalo
-                if (!empty($archivo) && file_exists("../uploads/$archivo")) {
-                    unlink("../uploads/$archivo");
-                }
-
-                // Ahora elimina el registro de la base de datos
-                $query = "DELETE FROM contenido WHERE id = ?";
-                $stmt = $conn->prepare($query);
-                $stmt->bind_param("i", $id);
-
-                if ($stmt->execute()) {
-                    echo "Contenido eliminado exitosamente.";
-                } else {
-                    echo "Error al eliminar el contenido.";
-                }
-            } else {
-                echo "Contenido no encontrado.";
-            }
-        } catch (Exception $e) {
-            echo "Error: " . $e->getMessage();
-        } finally {
-            $conn->close();
-        }
+    // Preparamos la consulta para eliminar el contenido de la base de datos
+    $query = "DELETE FROM contenido WHERE id = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("i", $id);
+    
+    if ($stmt->execute()) {
+        // El contenido se eliminó con éxito
+        echo "Contenido eliminado correctamente";
     } else {
-        echo "ID de contenido no válido.";
+        // Hubo un error al eliminar
+        echo "Error al eliminar contenido";
     }
-} else {
-    echo "Método no permitido.";
+
+    $stmt->close();
+    $conn->close();
+
+    // Redirigir al usuario a la página principal del administrador o actualizar la vista
+    header("Location: ../views/vistaAdmin.php");
+    exit;
 }
+

@@ -49,13 +49,14 @@ form{
                         <div class="card-body">
                             <h5 class="card-title"><?= htmlspecialchars($item['titulo']); ?></h5>
                             <p class="card-text"><?= htmlspecialchars($item['descripcion']); ?></p>
-                            <form id="eliminarForm" onsubmit="return false;">
-                                <button type="button" class="btn btn-warning" data-bs-toggle="modal" 
-                                        data-bs-target="#editarModal"
-                                        onclick="cargarDatos('<?= $item['id']; ?>', '<?= htmlspecialchars($item['titulo']); ?>', '<?= htmlspecialchars($item['descripcion']); ?>', '<?= htmlspecialchars($item['tipo']); ?>', '<?= htmlspecialchars($item['archivo']); ?>')">Editar</button>
-                                <button class="btn btn-danger">Eliminar</button>
-                                <input type="hidden" name="id" value="<?= $item['id']; ?>">
-                            </form>
+                            <form id="eliminarForm<?= $item['id']; ?>" action="../controllers/eliminarContenido.php" method="POST">
+    <button type="button" class="btn btn-warning" data-bs-toggle="modal" 
+            data-bs-target="#editarModal"
+            onclick="cargarDatos('<?= $item['id']; ?>', '<?= htmlspecialchars($item['titulo']); ?>', '<?= htmlspecialchars($item['descripcion']); ?>', '<?= htmlspecialchars($item['tipo']); ?>', '<?= htmlspecialchars($item['archivo']); ?>')">Editar</button>
+    <button type="submit" class="btn btn-danger" name="eliminar" value="eliminar">Eliminar</button>
+    <input type="hidden" name="id" value="<?= $item['id']; ?>">
+</form>
+
                         </div>
                     </div>
                 </div>
@@ -159,26 +160,27 @@ function cargarDatos(id, titulo, descripcion, tipo, archivo) {
         document.getElementById('archivoActual').style.display = 'none'; // Oculta el enlace si no hay archivo
     }
 }
+document.querySelectorAll('.eliminarForm').forEach(form => {
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
 
-document.getElementById("eliminarForm").addEventListener('submit',function(event){
-    event.preventDefault();
-    const formData = new FormData(this);
-    fetch('../controllers/eliminarContenido.php', {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => response.text())
-    .then(data => {
-        alert(data);
-        setTimeout(function(){
-        window.location.reload();
-    });
-
-    })
-    .catch(error => {
-        console.error('Error:', error);
+        const formData = new FormData(form);
+        
+        fetch(form.action, {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.text())
+        .then(data => {
+            alert(data); // Muestra el mensaje de éxito o error
+            window.location.reload(); // Recarga la página para ver los cambios
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
     });
 });
+
 
 </script>
 
