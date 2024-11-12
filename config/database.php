@@ -3,7 +3,13 @@
 
 
 function conectar() {
-    $mysqli = new mysqli('autorack.proxy.rlwy.net', 'root', 'HIHSjTtbRDwvIzJYOCqivjoGtlDxjqZr', 'estructurasdatos',21834);
+$host='autorack.proxy.rlwy.net';
+$user='root';
+$pass='HIHSjTtbRDwvIzJYOCqivjoGtlDxjqZr';
+$database='estructurasdatos';
+$port=21834;
+
+    $mysqli = new mysqli($host, $user, $pass,$database ,$port);
     
     if ($mysqli->connect_error) {
         // Muestra un mensaje de error detallado con la descripción y el código del error.

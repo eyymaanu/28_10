@@ -77,7 +77,7 @@ form{
                         <div class="card-body">
                             <h5 class="card-title"><?= htmlspecialchars($item['titulo']); ?></h5>
                             <p class="card-text"><?= htmlspecialchars($item['descripcion']); ?></p>
-                            <a href="contenido.php?id=<?= $item['id']; ?>" class="btn btn-primary">Ver detalles</a>
+                            <a href="./views/contenido.php?id=<?= $item['id']; ?>" class="btn btn-primary">Ver detalles</a>
                         </div>
                     </div>
                 </div>
@@ -89,4 +89,7 @@ form{
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
 </body>
+<script>
+    
+</script>
 </html>

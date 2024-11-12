@@ -28,7 +28,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->bind_param('ssssi', $titulo, $descripcion, $tipo, $archivo, $id);
 
     if ($stmt->execute()) {
-        echo "Contenido actualizado exitosamente.";
+        header("Location: ../views/vistaAdmin.php");
+       
     } else {
         echo "Error al actualizar el contenido.";
     }

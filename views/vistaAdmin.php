@@ -73,6 +73,16 @@ form{
                     </div>
                 </a>
             </div>
+            <div class="col-md-4 mb-4">
+                <a href="./register.php" class="text-decoration-none">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title text-center">Registrar Usuario</h5>
+                            <p class="card-text text-center">Haciendo clic aquí puedes Registrar un nuevo usuario</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
         </div>
     </div><!-- Modal para editar contenido -->
 <div class="modal fade" id="editarModal" tabindex="-1" aria-labelledby="editarModalLabel" aria-hidden="true">
